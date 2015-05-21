@@ -17,6 +17,7 @@ Crear un programa de apoyo y verificación para estudiantes de antiguo y nuevo i
 el proceso de re-ingreso o ingreso y les guie paso a paso todo lo necesario para 
 ser estudiante de la Universidad Don Bosco de El Salvador. */
 
+//limpieza de pantalla para Windows y Linux
 #ifdef WIN32
   #define LimpiarPantalla system( "cls" );
 #endif
