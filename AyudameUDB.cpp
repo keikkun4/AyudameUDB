@@ -26,15 +26,29 @@ ser estudiante de la Universidad Don Bosco de El Salvador. */
   #define LimpiarPantalla system( "clear" );
 #endif
 
+struct DatosEstudiantes{
+  char Nombre[256];
+  char Usuario[256];
+  char Contrasena[256];
+};
+DatosEstudiantes Estudiantes[100];
+int TotalEstudiantes = 0;
+int NuevosEstudiantes = 0;
+
 char P;//Opcion del menu
+char PPP;
 
 void CrearArchivo();//crea el archivo por si las dudas
 void LeerArchivo();
+void MostraArchivo();
+void GuardarArchivo();
+bool ExisteEstudiante(DatosEstudiantes Usuario);
 
 void CrearUsuario();
 
 int main () {
- CrearArchivo();
+ LeerArchivo();
+ MostraArchivo();
  do{
   cout<<"Menu"<<endl;
   cout<<"1 - Ingresar"<<endl;
@@ -45,6 +59,17 @@ int main () {
   switch ( P ){
     case '1':
     cout<<"Ingrese su usuario"<<endl;
+      if(Ingresar()){
+        do{
+        switch( PPP ){
+          cout<<"Menu"<<endl;
+          cout<<"1 - Modificar hoja de vida "<<endl;
+          cout<<"2 - Revisar pasos de ingreso"<<endl;
+          cout<<"3 - Cerrar Sesion"<<endl;
+          cin>>PPP;
+          }while(PPP = '3');
+        }
+      }
     break;
     case '2':
       CrearUsuario();
@@ -57,6 +82,7 @@ int main () {
     break;
     }
  }while(P != '3');
+ GuardarArchivo();
 }
 
 void CrearArchivo(){
@@ -65,20 +91,80 @@ void CrearArchivo(){
 }
 
 void CrearUsuario(){
-  string Nombre;
-  string Usuario;
-  string Contrasena;
   char PP;
   do{
     cout<<"Nombre del estudiante"<<endl;  
-    cin>>Nombre;
-    cout<<"Nombre del estudiante"<<endl;
-    cin>>Usuario;
-    cout<<"Nombre del estudiante"<<endl; 
-    cin>>Contrasena;
-    cout<<"Nombre: "<<Nombre<<" Usuario: "<<Usuario<<" Contrasena: "<<Contrasena<<endl;
+    scanf("%256s", Estudiantes[TotalEstudiantes+NuevosEstudiantes].Nombre);
+    cout<<"Nombre del Usuario"<<endl;
+    scanf("%256s", Estudiantes[TotalEstudiantes+NuevosEstudiantes].Usuario);
+    cout<<"Nombre del Contrasena"<<endl; 
+    scanf("%256s", Estudiantes[TotalEstudiantes+NuevosEstudiantes].Contrasena);
+    cout<<"Nombre: "<<Estudiantes[TotalEstudiantes+NuevosEstudiantes].Nombre<<" Usuario: "<<Estudiantes[TotalEstudiantes+NuevosEstudiantes].Usuario<<" Contrasena: "<<Estudiantes[TotalEstudiantes+NuevosEstudiantes].Contrasena<<endl;
     cout<<"Seguro Y/N"<<endl;
     cin>>PP;
-  }while(PP != 'Y');
-  ifstream fe("nombre.txt");
+  }while(!(PP == 'Y' || PP == 'y'));
+  NuevosEstudiantes++;
+}
+
+void LeerArchivo(){
+  char linea[256];
+  char *campo;
+  FILE *pArchivo;
+  
+  pArchivo = fopen("datos.txt", "r");
+   
+  if (!pArchivo) return;
+  while (fgets(linea, 256, pArchivo) != NULL) {
+    campo = strtok(linea, " ,\n");
+    sscanf(campo, "%s", Estudiantes[TotalEstudiantes].Nombre);
+    
+    campo = strtok(NULL, " ,\n");
+    sscanf(campo, "%s", Estudiantes[TotalEstudiantes].Usuario);
+    
+    campo = strtok(NULL, " ,\n");
+    sscanf(campo, "%s", Estudiantes[TotalEstudiantes].Contrasena);
+    
+    TotalEstudiantes++;
+  }
+  fclose(pArchivo);
+}
+
+void MostraArchivo(){
+  cout<<"Nombre Usuario Controseña"<<endl;
+  for (int i=0; i<TotalEstudiantes; i++) {
+    cout<<Estudiantes[i].Nombre<<" : "<<Estudiantes[i].Usuario<<" : "<<Estudiantes[i].Contrasena<<endl;
+  }
+}
+
+void GuardarArchivo(){
+  FILE *pArchivo;
+
+  pArchivo = fopen("datos.txt", "a");
+  
+   for (int i=TotalEstudiantes; i<TotalEstudiantes+NuevosEstudiantes; i++) {
+      fprintf(pArchivo, "%s, ",Estudiantes[i].Nombre);
+      fprintf(pArchivo, "%s, ",Estudiantes[i].Usuario);
+      fprintf(pArchivo, "%s\n ",Estudiantes[i].Contrasena);
+   }
+  
+  fclose(pArchivo);
+}
+
+bool Ingresar(){
+  DatosEstudiantes UsuarioLogin;
+  cout<<"Nombre del estudiante"<<endl;  
+  scanf("%256s", UsuarioLogin.Nombre);
+  cout<<"Nombre del estudiante"<<endl; 
+  scanf("%256s", UsuarioLogin.Contrasena);
+  return ExisteEstudiante(UsuarioLogin);
+  
+}
+
+bool ExisteEstudiante(DatosEstudiantes Usuario){
+  for( int i = 0; i< TotalEstudiantes+NuevosEstudiantes; i++){
+    if( Usuario.Usuario == Estudiantes[i].Usuario && Usuario.Contrasena == Estudiantes[i].Contrasena){
+       return true;
+    }
+  }
+  return false;
 }
