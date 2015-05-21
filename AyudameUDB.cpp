@@ -6,7 +6,6 @@
 using namespace std;
 
 /* AyudameUDB
- 
 Este programa se trabajo en la Universidad Don Bosco, como proyecto de catedra por las estudiantes:
 1) Karla Lissette Hernández, HO122082, Ingeniería Biomédica.
 2) Karla Lissette Mayora Claros, MC140395, Ingeniería Biomédica.
@@ -31,7 +30,9 @@ struct DatosEstudiantes{
   char Usuario[256];
   char Contrasena[256];
 };
+
 DatosEstudiantes Estudiantes[100];
+
 int TotalEstudiantes = 0;
 int NuevosEstudiantes = 0;
 
@@ -42,13 +43,13 @@ void CrearArchivo();//crea el archivo por si las dudas
 void LeerArchivo();
 void MostraArchivo();
 void GuardarArchivo();
-bool ExisteEstudiante(DatosEstudiantes Usuario);
+bool ExisteEstudiante();
 
 void CrearUsuario();
 
 int main () {
  LeerArchivo();
- MostraArchivo();
+ //MostraArchivo();
  do{
   cout<<"Menu"<<endl;
   cout<<"1 - Ingresar"<<endl;
@@ -58,18 +59,18 @@ int main () {
   LimpiarPantalla;
   switch ( P ){
     case '1':
-    cout<<"Ingrese su usuario"<<endl;
-      if(Ingresar()){
+      if( ExisteEstudiante() ){
         do{
-        switch( PPP ){
-          cout<<"Menu"<<endl;
-          cout<<"1 - Modificar hoja de vida "<<endl;
-          cout<<"2 - Revisar pasos de ingreso"<<endl;
-          cout<<"3 - Cerrar Sesion"<<endl;
-          cin>>PPP;
-          }while(PPP = '3');
+            cout<<"Menu"<<endl;
+            cout<<"1 - Modificar hoja de vida "<<endl;
+            cout<<"2 - Revisar pasos de ingreso"<<endl;
+            cout<<"3 - Cerrar Sesion"<<endl;
+            cin>>PPP;
+          }while(PPP != '3');
         }
-      }
+      else{
+            cout<<"Error"<<endl;
+        }
     break;
     case '2':
       CrearUsuario();
@@ -132,38 +133,36 @@ void LeerArchivo(){
 void MostraArchivo(){
   cout<<"Nombre Usuario Controseña"<<endl;
   for (int i=0; i<TotalEstudiantes; i++) {
-    cout<<Estudiantes[i].Nombre<<" : "<<Estudiantes[i].Usuario<<" : "<<Estudiantes[i].Contrasena<<endl;
+    cout<<Estudiantes[i].Nombre<<":"<<Estudiantes[i].Usuario<<":"<<Estudiantes[i].Contrasena<<endl;
   }
 }
 
 void GuardarArchivo(){
   FILE *pArchivo;
-
-  pArchivo = fopen("datos.txt", "a");
+  pArchivo = fopen("datos.txt", "w");
   
-   for (int i=TotalEstudiantes; i<TotalEstudiantes+NuevosEstudiantes; i++) {
-      fprintf(pArchivo, "%s, ",Estudiantes[i].Nombre);
-      fprintf(pArchivo, "%s, ",Estudiantes[i].Usuario);
-      fprintf(pArchivo, "%s\n ",Estudiantes[i].Contrasena);
+   for (int i=0; i<TotalEstudiantes+NuevosEstudiantes; i++) {
+      fprintf(pArchivo, "%s,",Estudiantes[i].Nombre);
+      fprintf(pArchivo, "%s,",Estudiantes[i].Usuario);
+      fprintf(pArchivo, "%s\n",Estudiantes[i].Contrasena);
    }
   
   fclose(pArchivo);
 }
 
-bool Ingresar(){
-  DatosEstudiantes UsuarioLogin;
-  cout<<"Nombre del estudiante"<<endl;  
-  scanf("%256s", UsuarioLogin.Nombre);
-  cout<<"Nombre del estudiante"<<endl; 
-  scanf("%256s", UsuarioLogin.Contrasena);
-  return ExisteEstudiante(UsuarioLogin);
-  
-}
+bool ExisteEstudiante(){
+  char LogUsuario[256];
+  char LogContrasena[256];
 
-bool ExisteEstudiante(DatosEstudiantes Usuario){
+  cout<<"Ingrese su usuario"<<endl;
+  cout<<"Nombre del estudiante"<<endl;  
+  scanf("%256s", LogUsuario);
+  cout<<"Nombre del contrasena"<<endl; 
+  scanf("%256s", LogContrasena);
+  
   for( int i = 0; i< TotalEstudiantes+NuevosEstudiantes; i++){
-    if( Usuario.Usuario == Estudiantes[i].Usuario && Usuario.Contrasena == Estudiantes[i].Contrasena){
-       return true;
+    if( strcmp( LogUsuario , Estudiantes[i].Usuario ) && strcmp( LogContrasena , Estudiantes[i].Contrasena) ){
+      return true;
     }
   }
   return false;
