@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string.h>
 #include <stdlib.h>
+//#include <windows.h>
 
 using namespace std;
 
@@ -38,29 +39,21 @@ DatosEstudiantes Estudiantes[3];
 int TotalEstudiantes = 0;
 int NuevosEstudiantes = 0;
 
-const char InstruccionesNI[] =
-"Paso 1 -    \n"
-"dgdsgdsg    \n"
-"Lorem ipsum    \n"
-"fkdds d   fdfdsf\n";
-
-
-const char InstruccionesAI[] =
-"";
-
-void LeerArchivo();//Lee los estudiantes registrados al ingresar al programa
-void GuardarArchivo();//Guarda todos los datos en el archivo de los estudiantes
-bool iniciarSesion();//Solicita datos de usuario y retorna  verdadero si existen
-void HojaDeVida();//Se guardan los datos necesarios del usuario para la ficha academica
-void LeerHojaDeVida();//Se muestra el contenido de la hoja de vida del estudiante
-void MostrarPasos();//Despliega los pasos a seguir en el proceso academico
-void CrearUsuario();
+void LeerArchivo();         //Lee los estudiantes registrados al ingresar al programa
+void GuardarArchivo();      //Guarda todos los datos en el archivo de los estudiantes
+bool iniciarSesion();       //Solicita datos de usuario y retorna  verdadero si existen
+void HojaDeVida();          //Se guardan los datos necesarios del usuario para la ficha academica
+void LeerHojaDeVida();      //Se muestra el contenido de la hoja de vida del estudiante
+void MostrarPasos();        //Despliega los pasos a seguir en el proceso academico
+void CrearUsuario();        //Ingreso de datos de Usuario y contraseña para accesar al sistema
+void InstruccionesNI();     //Aqui estan desplegadas todas los pasos a seguir para Nuevo Ingreso
+void InstruccionesAI();     //Aqui estan desplegadas todos los pasos a seguir para Antiguo Ingreso
 
 int main () {
- char opc;//Opcion del menu principal
- char opc2;//Opcion de menu una vez ingrese sesion
+ char opc;   //Opcion del menu principal
+ char opc2;  //Opcion de menu una vez ingrese sesion
  
- LeerArchivo();//Lee los estudiantes registrados al ingresar al programa
+ LeerArchivo();     //Lee los estudiantes registrados al ingresar al programa
   
  do{
   cout<<"------------------------------------------------"<<endl;  
@@ -81,11 +74,13 @@ int main () {
             cout<<"---------------------------------------------"<<endl;  
             cout<<"Seleccione una opcion"<<endl;
             cout<<"---------------------------------------------"<<endl;
+            cout<<"Te recomendamos llenes la hoja de vida primero, para que reunas de antemano\ntoda la documentacion que necesitas.\n"<<endl;
             cout<<"1 - Crear hoja de vida "<<endl;
             cout<<"2 - Leer hoja de vida "<<endl;
             cout<<"3 - Revisar pasos de ingreso"<<endl;
             cout<<"4 - Cerrar Sesion"<<endl;
             cin>>opc2;
+            LimpiarPantalla;
             switch (opc2){
               //Modifica hoja de vida
               case '1':
@@ -128,6 +123,8 @@ int main () {
     }
  }while(opc != '3');
  GuardarArchivo();
+ 
+ //system ("pause");
 }
 
 void CrearUsuario(){
@@ -252,6 +249,61 @@ void HojaDeVida(){
   scanf("%256s", campo);
   fprintf(pArchivo, " %s\n", campo);
   
+  cout<<"Correo Electronico: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, "Correo Electronico: %s\n", campo);
+  
+  cout<<"Telefono Fijo o Movil: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, "Telefono Fijo o Movil: %s\n", campo);
+  
+  cout<<"Nota PAES: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, "Nota PAES: %s\n", campo);
+  
+  cout<<"N°de Partida: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, "N°de Partida: %s\n", campo);
+  
+  cout<<"DUI: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, "DUI: %s\n", campo);
+  
+  cout<<"NIT: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, "NIT: %s\n", campo);
+  
+  cout<<"DATOS DEL ENCARGADO"<<endl;
+  cout<<"Primer Nombre: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, "DATOS DEL ENCARGADO. %s\n", campo);
+  fprintf(pArchivo, "Nombre: %s", campo);
+
+  cout<<"Segundo Nombre: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, " %s", campo);
+  
+  cout<<"Primer Apellido: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, " %s", campo);
+  
+  cout<<"Segunda Apellido: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, " %s\n", campo);
+  
+  cout<<"Correo Electronico: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, "Correo Electronico: %s\n", campo);
+  
+  cout<<"Telefono Fijo o Movil: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, "Telefono Fijo o Movil: %s\n", campo);
+  
+  cout<<"DUI: "<<endl;
+  scanf("%256s", campo);
+  fprintf(pArchivo, "DUI: %s\n", campo);
+
+  cout<<"IMPORTANTE: Consigue tu paquete informativo para enterarte de\ntoda la documentacion restante para tu proceso de ingreso\n"<<endl;
   fclose(pArchivo);
 }
 
@@ -265,7 +317,7 @@ void LeerHojaDeVida(){
 
   pArchivo = fopen(NombreArchivo, "r"); //Abre el archivo en modo lectura
   if (!pArchivo) {
-    cout<<"El archivo de hoja de vida no se pudo abrir o no existe"<<endl;
+    cout<<"El archivo de hoja de vida no se pudo abrir o no existe\n"<<endl;
     return;
   }
 
@@ -283,7 +335,100 @@ void MostrarPasos(){
  cin>>opc;
  
  if (opc == 'S')
-  cout<<InstruccionesNI;
+  InstruccionesNI();
  else
-  cout<<InstruccionesAI;
+  InstruccionesAI();
+}
+
+void InstruccionesNI(){
+    char opc2;
+    do{
+            cout<<"---------------------------------------------"<<endl;  
+            cout<<"MENU DE PASOS PARA ALUMNOS NUEVO INGRESO"<<endl;
+            cout<<"---------------------------------------------"<<endl;
+            cout<<"Los estudiantes de nuevo ingreso son aquellos que se matriculan por primera vez en la Universidad.\n Para ingresar deben realizar los siguientes pasos:\n"<<endl;
+            cout<<"1 - Compra de paquete informativo"<<endl;
+            cout<<"2 - Visitar Ofician de Nuevo Ingreso"<<endl;
+            cout<<"3 - Completar el cuestionario socioeconómico"<<endl;
+            cout<<"4 - Cancelar Inscripcion"<<endl;
+            cout<<"5 - Salir"<<endl;
+            cin>>opc2;
+            LimpiarPantalla;
+            switch (opc2){
+              //Compra de paquete informativo
+              case '1':
+                cout<<"\nDebes Adquirir paquete informativo, a un precio de $20.00 en colecturia.\nNOTA: Colecturia queda en la segunda planta del edificio R.\n\n";
+                break;
+              
+              //Visitar Ofician de Nuevo Ingreso
+              case '2':
+                cout<<"\nLuego de comprar tu paquete informativo puedes dirigirte a la oficina de asesoria en la oficina de Nuevo Ingreso.\n Esta esta ubicada en la segunda planta del edificio A, a lado del monumento de Don Bosco, \n muy cerca de donde comprastes tu paquete informativo\n\n";
+                break;
+                
+              case '3':
+                cout<<"\nUna vez completes el cuestionario socioeconómico que se encuentra en tu paquete informativo y tengas todos tus documentos\n lo deberas entregar en el Departamento de Gestión Social Estudiantil. Que se encuentra ubicado en el edificio que esta a ubicado al lado\n del edificio C donde tambien encuentras a Pastoral.\n Aqui te asignaran tu couta estudiantil que puede ir de un $68.00 a $210.00\n\n";
+                break;
+                
+               case '4': 
+                cout<< "\nUna vez asignada tu couta deberas ir a cancelar en colecturía los costos de ingreso, \nsegun te informe el sistema de incripcion de la universidad,\n ademas recuerda pedir a tu tutor asignada te indique como inscibiras materias. Si no te han asignado solicita te lo asignen a tu jefe de escuela, \n sino sabes quien es \n puedes acercarte nuevamente a la oficina de de Nuevo Ingreso. Recuerda que esta ubicada en la segunda planta del edificio A, a lado del monumento de Don Bosco.\n\n";
+                break;
+                
+               case '5':
+                cout<<"\nFue un gusto ayudarte con tu orientacion de inscipcion. Para mas informacion, visita: http://www.udb.edu.sv/nuevoingreso/proceso.html \n\n";
+                break;
+                
+              default:
+                cout<<"Opcion no valida."<<endl;
+                break;
+            }
+          }while(opc2 != '5');
+}
+
+void InstruccionesAI(){
+char opc2;
+    do{
+            cout<<"---------------------------------------------"<<endl;  
+            cout<<"MENU DE PASOS PARA ALUMNOS ANTIGUO INGRESO"<<endl;
+            cout<<"---------------------------------------------"<<endl;
+            cout<<"La inscripción de materias es el proceso por el cual el estudiante, \ndefine los grupos de clases y de laboratorios de cada materia que va a cursar,\nfinalizando el proceso con el pago de los aranceles correspondientes al ciclo.\n"<<endl;
+            cout<<"Elige el paso del que deseas informacion:\n"<<endl;
+            cout<<"1 - Solvente de deudas con la Universidad"<<endl;
+            cout<<"2 - Pre-incripcion de materias"<<endl;
+            cout<<"3 - Retiro de comprobante"<<endl;
+            cout<<"4 - Cancelar el pago Inscripcion"<<endl;
+            cout<<"5 - Salir"<<endl;
+            cin>>opc2;
+            LimpiarPantalla;
+            switch (opc2){
+                //Solvente de deudas con la Universidad
+               case '1':
+                cout<<"\nEs requisito indispensable, estar solvente en Colecturía, Biblioteca, Administración Académica \ny no tener materias reprobadas en tercera matrícula.\n\n";
+                break;
+              
+                //Pre-incripcion de materias
+               case '2':
+                cout<<"\nPreinscribir materias en la Escuela respectiva o en línea, revisar bien los grupos asignados y las materias preinscritas \nantes de realizar la impresión del comprobante de pago ya que una vez impreso, \nno se realizará ningún cambio de grupo o cambio de materias. \nLa pre inscripción de materias es responsabilidad directa del estudiante, sino sabes como puedes pedir orientacion a tu tutor asiganado.\n\n";
+                break;
+                
+                //Retiro de comprobante
+               case '3':
+                cout<<"\nRetirar en Colecturía el comprobante de pagos e inscripción o imprimirlo directamente cuando realiza el trámite en línea.\n\n";
+                break;
+                
+               //Cancelar el pago Inscripcion
+               case '4': 
+                cout<< "\nCancelar los aranceles del ciclo en la fecha que aparece en la boleta de pago; \nsi no lo hace en el tiempo definido, se le anula el proceso y tiene que realizarlo de nuevo, \nquedando sujeto a los cupos disponibles en los grupos.\n\n";
+                break;
+                
+               case '5':
+                cout<<"\nFue un gusto ayudarte con tu orientacion de inscipcion. \nLas materias quedan inscritas automáticamente desde el momento en que se realizan los pagos correspondientes. \nAsi que puedes estar seguro de que puedes seguir estudiando \nPara mas informacion, visita: http://www.udb.edu.sv/udb/index.php/pagina/ver/inscripcion_estudiantes_antiguo_ingreso\n"<<endl;
+                
+                cout<<"NOTA: existe la Inscripción extraordinaria esta se da cuando un estudiante,\n no puede presentarse a inscribir materias en el período ordinario por motivos de fuerza mayor, \nse establece un período extraordinario de inscripción con un recargo en el pago. \nEn este caso, la inscripción de una asignatura queda sujeta al cupo disponible. \n\n";
+                break;
+                
+              default:
+                cout<<"Opcion no valida."<<endl;
+                break;
+            }
+          }while(opc2 != '5');
 }
